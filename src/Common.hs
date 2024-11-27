@@ -290,3 +290,9 @@ findRepeatingPattern iterations f createKey solve input = values HM.! index
 
 both :: (a, a) -> (a -> b) -> (b, b)
 both (x, y) f = (f x, f y)
+
+runParts :: [a -> b] -> [a] -> [b]
+runParts = zipWith (\f x -> f x)
+
+solveDay :: (Show b) => [a -> b] -> (String -> [a]) -> ECSolution
+solveDay fns parse = map show . runParts fns . parse

@@ -29,9 +29,7 @@ day02TestInput =
   \TRODEOAL"
 
 day02 :: ECSolution
-day02 input = show <$> [part1 i1, part2 i2, part3 i3]
-  where
-    [i1, i2, i3] = parseInput input
+day02 = solveDay [part1, part2, part3] parseInput
 
 parseInput :: String -> [([String], [String])]
 parseInput = map (parse p) . splitOn "\n\n\n"

@@ -5,6 +5,8 @@ import Control.Monad (guard)
 import Data.HashSet qualified as H
 import Data.List.Split (splitOn)
 
+type Grid = H.HashSet Point2d
+
 day03TestInput :: String
 day03TestInput =
   "..........\n\
@@ -33,14 +35,12 @@ day03TestInput =
   \"
 
 day03 :: ECSolution
-day03 input = show <$> [part1 i1, part2 i2, part3 i3]
-  where
-    [i1, i2, i3] = parseInput input
+day03 = solveDay [part1, part2, part3] parseInput
 
-parseInput :: String -> [H.HashSet Point2d]
+parseInput :: String -> [Grid]
 parseInput = map parsePart . splitOn "\n\n"
 
-parsePart :: String -> H.HashSet Point2d
+parsePart :: String -> Grid
 parsePart input =
   H.fromList
     [ (i, j)
@@ -49,24 +49,16 @@ parsePart input =
         x == '#'
     ]
 
-part1 :: H.HashSet Point2d -> Int
-part1 = solve point2dNeighbours 4
+part1, part2, part3 :: Grid -> Int
+part1 = solve point2dNeighbours
+part2 = part1
+part3 = solve point2dNeighboursDiags
 
-part2 :: H.HashSet Point2d -> Int
-part2 = solve point2dNeighbours 4
-
-part3 :: H.HashSet Point2d -> Int
-part3 = solve point2dNeighboursDiags 8
-
-solve :: (Point2d -> [Point2d]) -> Int -> H.HashSet Point2d -> Int
-solve _ _ grid | H.null grid = 0
-solve fn n grid = H.size grid + solve fn n grid'
+solve :: (Point2d -> [Point2d]) -> Grid -> Int
+solve _ grid | H.null grid = 0
+solve fn grid = H.size grid + solve fn grid'
   where
-    grid' = mine fn n grid
-
-mine :: (Point2d -> [Point2d]) -> Int -> H.HashSet Point2d -> H.HashSet Point2d
-mine fn n grid = H.fromList do
-  p <- H.toList grid
-  let ns = countTrue id [H.member n grid | n <- fn p]
-  guard $ ns == n
-  pure p
+    grid' = H.fromList do
+      p <- H.toList grid
+      guard $ all (`H.member` grid) $ fn p
+      pure p
