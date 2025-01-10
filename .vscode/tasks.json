@@ -1,7 +1,5 @@
-
 {
   // Automatically created by phoityne-vscode extension.
-
   "version": "2.0.0",
   "presentation": {
     "reveal": "always",
@@ -9,24 +7,34 @@
   },
   "tasks": [
     {
-      // F7
       "group": {
         "kind": "build",
         "isDefault": true
       },
+      "type": "shell",
+      "label": "haskell repl",
+      "command": "cabal repl",
+      "problemMatcher": []
+    },
+    {
+      "group": "build",
+      "label": "haskell run day",
+      "type": "shell",
+      "command": "cabal run ec2024 ${input:day} -- +RTS -N20"
+    },
+    {
+      "group": "build",
+      "label": "haskell run all days",
+      "type": "shell",
+      "command": "cabal run ec2024 -- +RTS -N20"
+    },
+    {
+      "group": "build",
       "label": "haskell build",
       "type": "shell",
       "command": "cabal configure && cabal build"
     },
     {
-      // F6
-      "group": "build",
-      "type": "shell",
-      "label": "haskell clean & build",
-      "command": "cabal clean && cabal configure && cabal build"
-    },
-    {
-      // F8
       "group": {
         "kind": "test",
         "isDefault": true
@@ -34,6 +42,19 @@
       "type": "shell",
       "label": "haskell test",
       "command": "cabal test"
+    },
+    {
+      "group": "build",
+      "type": "shell",
+      "label": "haskell clean & build",
+      "command": "cabal clean && cabal configure && cabal build"
+    }
+  ],
+  "inputs": [
+    {
+      "id": "day",
+      "description": "Day to run",
+      "type": "promptString"
     }
   ]
 }
