@@ -9,7 +9,7 @@ import Data.Char (digitToInt)
 import Data.Either (fromRight)
 import Data.Foldable (toList)
 import Data.HashMap.Strict qualified as HM
-import Data.Hashable (Hashable)
+import Data.Hashable (Hashable, hash, hashWithSalt)
 import Data.List (sort, sortBy)
 import Data.List.Split (splitOn)
 import Data.Map qualified as M
@@ -28,6 +28,39 @@ type Point3d = (Int, Int, Int)
 type Grid2d = V.Vector (V.Vector Int)
 
 type Interval = (Int, Int)
+
+data Direction = North | East | South | West deriving (Show, Enum, Eq, Ord)
+
+instance Hashable Direction where
+  hashWithSalt salt = hashWithSalt salt . fromEnum
+
+moveOneStepInDir :: Point2d -> Direction -> Point2d
+moveOneStepInDir (i, j) = \case
+  North -> (i - 1, j)
+  East -> (i, j + 1)
+  South -> (i + 1, j)
+  West -> (i, j - 1)
+
+turn90 :: Direction -> Direction
+turn90 = \case
+  North -> East
+  East -> South
+  South -> West
+  West -> North
+
+turn180 :: Direction -> Direction
+turn180 = \case
+  North -> South
+  East -> West
+  South -> North
+  West -> East
+
+turn270 :: Direction -> Direction
+turn270 = \case
+  North -> West
+  East -> North
+  South -> East
+  West -> South
 
 countTrue :: (Foldable f) => (a -> Bool) -> f a -> Int
 countTrue p = length . filter p . toList

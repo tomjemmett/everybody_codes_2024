@@ -27,6 +27,7 @@ common shared-properties
         hashable,
         lens,
         mtl,
+        parallel,
         parsec,
         pointedlist,
         primes,
@@ -47,6 +48,7 @@ common shared-properties
         FlexibleInstances
         ImportQualifiedPost
         LambdaCase
+        MonadComprehensions
         MultiWayIf
         RecordWildCards
         TupleSections
@@ -90,6 +92,7 @@ executable ec2024
     build-depends:
         ec2024
     hs-source-dirs:   app
+    ghc-options: -threaded -rtsopts
 
 test-suite spec
     import:           shared-properties
