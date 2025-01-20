@@ -46,7 +46,7 @@ part3 schedules = minimum scores
     segments :: [[Point3d]]
     segments = map runSchedule schedules
     segments' :: S.HashSet Point3d
-    segments' = S.fromList $ concat $ segments
+    segments' = S.fromList $ concat segments
     leaves :: [Point3d]
     leaves = map last segments
     mainBranch :: [Point3d]
