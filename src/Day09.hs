@@ -1,7 +1,6 @@
 module Day09 (day09, day09TestInput) where
 
 import Common
-import Control.Parallel.Strategies
 import Data.Maybe (fromJust)
 import Data.Vector qualified as V
 import Text.Parsec qualified as P
@@ -35,13 +34,13 @@ day09 =
     p = number' `P.sepEndBy` P.newline
 
 part1 :: [Int] -> Int
-part1 xs = sum $ parMap rseq (dp V.!) xs
+part1 xs = sum [dp V.! i | i <- xs]
   where
     stamps = [1, 3, 5, 10]
     dp = createDp (maximum xs) stamps
 
 part2 :: [Int] -> Int
-part2 xs = sum $ parMap rseq (dp V.!) xs
+part2 xs = sum [dp V.! i | i <- xs]
   where
     stamps = [1, 3, 5, 10, 15, 16, 20, 24, 25, 30]
     dp = createDp (maximum xs) stamps
@@ -49,7 +48,12 @@ part2 xs = sum $ parMap rseq (dp V.!) xs
 part3 :: [Int] -> Int
 part3 xs = sum $ map go xs
   where
-    go b = minimum $ parMap rseq (\i -> dp V.! (b1 - i) + dp V.! (b2 + i)) [0 .. 50]
+    go b =
+      minimum $
+        [ dp V.! (b1 - i) + dp V.! (b2 + i)
+          | i <- [0 .. 50],
+            b2 - b1 + 2 * i <= 100
+        ]
       where
         b1 = b `div` 2
         b2 = b - b1
