@@ -1,5 +1,4 @@
--- module Day05 (day05, day05TestInput) where
-module Day05 where
+module Day05 (day05, day05TestInput) where
 
 import Common
 import Control.Monad.State

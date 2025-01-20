@@ -1,5 +1,4 @@
--- module Day12 (day12, day12TestInput) where
-module Day12 where
+module Day12 (day12, day12TestInput) where
 
 import Common
 import Data.List (partition)
