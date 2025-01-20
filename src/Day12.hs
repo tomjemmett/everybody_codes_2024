@@ -64,7 +64,7 @@ launch (c, (ci, cj)) (t, (ti, tj)) = if n `mod` 3 /= 0 then Nothing else Just (c
     di = ci - ti
     dj = tj - cj
     n = dj - di
-    cv = fromEnum c - 65
+    cv = fromEnum c - 64
     tv = case t of
       'T' -> 1
       'H' -> 2
