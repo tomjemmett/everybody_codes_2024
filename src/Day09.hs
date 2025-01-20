@@ -1,11 +1,8 @@
--- module Day09 (day09, day09TestInput) where
-module Day09 where
+module Day09 (day09, day09TestInput) where
 
 import Common
 import Control.Parallel.Strategies
 import Data.Maybe (fromJust)
-import Data.PQueue.Prio.Min (MinPQueue ((:<)))
-import Data.PQueue.Prio.Min qualified as PQ
 import Data.Vector qualified as V
 import Text.Parsec qualified as P
 import Text.Parsec.String (Parser)
@@ -60,7 +57,7 @@ part3 xs = sum $ map go xs
     dp = createDp (maximum xs) stamps
 
 createDp :: Int -> [Int] -> V.Vector Int
-createDp maxSparkball stamps = V.fromList dp
+createDp maxSparkball stamps = dp
   where
-    dp = [if x == 0 then 0 else minStamps x | x <- [0 .. maxSparkball]]
-    minStamps x = minimum [dp !! (x - stamp) + 1 | stamp <- stamps, x >= stamp]
+    dp = V.fromList [if x == 0 then 0 else minStamps x | x <- [0 .. maxSparkball]]
+    minStamps x = minimum [dp V.! (x - stamp) + 1 | stamp <- stamps, x >= stamp]
